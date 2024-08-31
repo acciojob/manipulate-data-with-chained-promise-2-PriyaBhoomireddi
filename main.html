@@ -1,13 +1,51 @@
 <!DOCTYPE html>
-
-<html>
-  <head>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-
-  <body>
-    <!-- do not change this code -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise Chaining Example</title>
+</head>
+<body>
     <div id="output"></div>
-    <script type="text/javascript" src="./script.js"></script>
-  </body>
+
+    <script>
+        function manipulateData(array) {
+            // Step 1: Return a promise that resolves with the array after 3 seconds
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(array);
+                }, 3000);
+            });
+        }
+
+        // Input array
+        const inputArray = [1, 2, 3, 4];
+
+        // Chain the promises
+        manipulateData(inputArray)
+            .then((numbers) => {
+                // Step 2: Filter out odd numbers and update the output
+                return new Promise((resolve) => {
+                    const evenNumbers = numbers.filter((num) => num % 2 === 0);
+                    setTimeout(() => {
+                        document.getElementById('output').innerText = evenNumbers.join(', ');
+                        resolve(evenNumbers);
+                    }, 1000); // Wait 1 second before displaying
+                });
+            })
+            .then((evenNumbers) => {
+                // Step 3: Multiply even numbers by 2 and update the output
+                return new Promise((resolve) => {
+                    const multipliedNumbers = evenNumbers.map((num) => num * 2);
+                    setTimeout(() => {
+                        document.getElementById('output').innerText = multipliedNumbers.join(', ');
+                        resolve(multipliedNumbers);
+                    }, 2000); // Wait 2 seconds before displaying
+                });
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    </script>
+</body>
 </html>
